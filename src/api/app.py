@@ -1,16 +1,12 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 
-from src.api.repository import CRUD
-from src.api.services.users import schema as sc
+from src.api.services import ROUTERS
 
 app = FastAPI()
+for router in ROUTERS:
+    app.include_router(router)
 
 
 @app.get('/')
-async def root(crud: CRUD = Depends(CRUD)):
-    return {'message': 'Hello World!'}
-
-
-@app.post('/')
-async def root(user: sc.User, crud: CRUD = Depends(CRUD)):
+async def root():
     return {'message': 'Hello World!'}

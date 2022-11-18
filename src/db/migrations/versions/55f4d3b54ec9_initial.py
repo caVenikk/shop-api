@@ -5,9 +5,8 @@ Revises:
 Create Date: 2022-11-10 22:09:39.061819
 
 """
-from alembic import op
 import sqlalchemy as sa
-
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '55f4d3b54ec9'
@@ -29,21 +28,21 @@ def upgrade() -> None:
     op.create_index('product_price_index', 'products', ['price'], unique=False)
     op.create_index('product_title_index', 'products', ['title'], unique=False)
     op.create_table('users',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('first_name', sa.String(), nullable=False),
-    sa.Column('second_name', sa.String(), nullable=False),
-    sa.Column('username', sa.String(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
-    )
+                    sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
+                    sa.Column('first_name', sa.String(), nullable=False),
+                    sa.Column('second_name', sa.String(), nullable=False),
+                    sa.Column('username', sa.String(), nullable=False),
+                    sa.PrimaryKeyConstraint('id')
+                    )
     op.create_index('user_username_index', 'users', ['username'], unique=False)
     op.create_table('orders',
-    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('product_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
-    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
+                    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+                    sa.Column('user_id', sa.BigInteger(), nullable=False),
+                    sa.Column('product_id', sa.Integer(), nullable=False),
+                    sa.ForeignKeyConstraint(['product_id'], ['products.id'], ),
+                    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+                    sa.PrimaryKeyConstraint('id')
+                    )
     # ### end Alembic commands ###
 
 

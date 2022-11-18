@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Float, func, Index
+from sqlalchemy import Column, ForeignKey, Integer, String, Float, func, Index, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -8,10 +8,11 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
 
-    id = Column('id', Integer, primary_key=True, autoincrement=True)
+    id = Column('id', BigInteger, primary_key=True, autoincrement=False)
+
     first_name = Column('first_name', String, nullable=False)
-    second_name = Column('second_name', String, nullable=False)
-    username = Column('username', String, nullable=False)
+    second_name = Column('second_name', String, nullable=True)
+    username = Column('username', String, nullable=True)
 
     orders = relationship("Order", back_populates="user")
 

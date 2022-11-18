@@ -4,6 +4,6 @@ from .users import router as users_router
 
 ROUTERS = [
     products_router,
-    # users_router,
+    users_router,
     # orders_router
 ]

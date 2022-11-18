@@ -2,4 +2,10 @@ from pydantic import BaseModel
 
 
 class Order(BaseModel):
-    pass
+    user_id: int
+    product_id: int
+
+
+class ResponseOrder(Order):
+    class Config:
+        orm_mode = True

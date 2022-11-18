@@ -1,3 +1,4 @@
+from sqlalchemy import select, delete
 from sqlalchemy.orm import sessionmaker
 
 from src.api.repository import BaseRepository
@@ -8,11 +9,20 @@ class OrderRepository(BaseRepository):
     def __init__(self, session: sessionmaker):
         super().__init__(session)
 
-    def add(self, order: md.Order):
-        pass
+    async def add(self, order: md.Order):
+        async with self._session() as s:
+            async with s.begin():
+                s.add(order)
 
-    def get(self, order_id: int):
-        pass
+    async def get(self, order_id: int) -> md.Order | None:
+        async with self._session() as s:
+            return (await s.execute(
+                select(md.Order).where(md.Order.id == order_id)
+            )).scalar()
 
-    def delete(self, order_id: int):
-        pass
+    async def delete(self, order_id: int):
+        async with self._session() as s:
+            async with s.begin():
+                return bool((await s.execute(
+                    delete(md.Order).where(md.Order.id == order_id)
+                )).rowcount)

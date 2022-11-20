@@ -6,9 +6,24 @@ from src.api.services.users import schema as sc
 from src.db import models as md
 
 router = APIRouter(
-    prefix="/user",
-    tags=["user"],
+    prefix="/users",
+    tags=["users"],
 )
+
+
+@router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "model": list[sc.ResponseUser],
+            "description": "Users array"
+        }
+    }
+)
+async def get_users(limit: int | None = None, offset: int | None = None, crud: CRUD = Depends(CRUD)):
+    users = await crud.users.all(limit, offset)
+    return [sc.ResponseUser.from_orm(user) for user in users]
 
 
 @router.get(

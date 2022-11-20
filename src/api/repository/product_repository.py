@@ -20,6 +20,16 @@ class ProductRepository(BaseRepository):
                 select(md.Product).where(md.Product.id == product_id)
             )).scalar()
 
+    async def all(
+            self,
+            limit: int | None = None,
+            offset: int | None = None
+    ) -> list[md.Product]:
+        async with self._session() as s:
+            return (await s.execute(
+                select(md.Product).offset(offset).limit(limit)
+            )).scalars()
+
     async def update(self, product: md.Product):
         async with self._session() as s:
             async with s.begin():

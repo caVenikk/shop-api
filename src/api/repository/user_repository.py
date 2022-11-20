@@ -20,6 +20,16 @@ class UserRepository(BaseRepository):
                 select(md.User).where(md.User.id == user_id)
             )).scalar()
 
+    async def all(
+            self,
+            limit: int | None = None,
+            offset: int | None = None
+    ) -> list[md.User]:
+        async with self._session() as s:
+            return (await s.execute(
+                select(md.User).offset(offset).limit(limit)
+            )).scalars()
+
     async def update(self, user: md.User):
         async with self._session() as s:
             async with s.begin():
@@ -34,7 +44,7 @@ class UserRepository(BaseRepository):
                 )
                 return bool((await s.execute(update_user_stmt)).rowcount)
 
-    async def delete(self, user_id: int):
+    async def delete(self, user_id: int) -> bool:
         async with self._session() as s:
             async with s.begin():
                 return bool((await s.execute(

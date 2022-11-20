@@ -20,6 +20,16 @@ class OrderRepository(BaseRepository):
                 select(md.Order).where(md.Order.id == order_id)
             )).scalar()
 
+    async def all(
+            self,
+            limit: int | None = None,
+            offset: int | None = None
+    ) -> list[md.Order]:
+        async with self._session() as s:
+            return (await s.execute(
+                select(md.Order).offset(offset).limit(limit)
+            )).scalars()
+
     async def delete(self, order_id: int):
         async with self._session() as s:
             async with s.begin():

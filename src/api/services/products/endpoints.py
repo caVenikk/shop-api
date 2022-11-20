@@ -6,9 +6,24 @@ from src.api.services.products import schema as sc
 from src.db import models as md
 
 router = APIRouter(
-    prefix="/product",
-    tags=["product"],
+    prefix="/products",
+    tags=["products"],
 )
+
+
+@router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "model": list[sc.ResponseProduct],
+            "description": "Products array"
+        }
+    }
+)
+async def get_products(limit: int | None = None, offset: int | None = None, crud: CRUD = Depends(CRUD)):
+    products = await crud.products.all(limit, offset)
+    return [sc.ResponseProduct.from_orm(product) for product in products]
 
 
 @router.get(

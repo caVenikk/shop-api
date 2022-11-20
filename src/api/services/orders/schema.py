@@ -7,5 +7,7 @@ class Order(BaseModel):
 
 
 class ResponseOrder(Order):
+    id: int
+
     class Config:
         orm_mode = True

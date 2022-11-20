@@ -7,9 +7,24 @@ from src.api.services.orders import schema as sc
 from src.db import models as md
 
 router = APIRouter(
-    prefix="/order",
-    tags=["order"],
+    prefix="/orders",
+    tags=["orders"],
 )
+
+
+@router.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "model": list[sc.ResponseOrder],
+            "description": "Orders array"
+        }
+    }
+)
+async def get_orders(limit: int | None = None, offset: int | None = None, crud: CRUD = Depends(CRUD)):
+    orders = await crud.orders.all(limit, offset)
+    return [sc.ResponseOrder.from_orm(order) for order in orders]
 
 
 @router.get(

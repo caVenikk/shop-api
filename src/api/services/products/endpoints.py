@@ -95,7 +95,7 @@ async def update_product(
     "/{product_id}",
     status_code=status.HTTP_200_OK,
     responses={
-        200: {"description": "Product deleted"},
+        200: {"description": "Product now inactive"},
         404: {"description": "Product not found"}
     }
 )
@@ -106,5 +106,24 @@ async def delete_product(product_id: int, crud: CRUD = Depends(CRUD)):
             detail=f"Product with id={product_id} not found."
         )
     return JSONResponse(
-        content={"detail": f"Deleted product with id={product_id}."}
+        content={"detail": f"Product with id={product_id} now inactive."}
+    )
+
+
+@router.patch(
+    "/{product_id}/restore",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {"description": "Product restored"},
+        404: {"description": "Product not found"}
+    }
+)
+async def restore_product(product_id: int, crud: CRUD = Depends(CRUD)):
+    if not await crud.products.restore(product_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Product with id={product_id} not found."
+        )
+    return JSONResponse(
+        content={"detail": f"Restored product with id={product_id}."}
     )

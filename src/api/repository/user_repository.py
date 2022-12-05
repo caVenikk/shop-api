@@ -1,4 +1,4 @@
-from sqlalchemy import select, update, delete
+from sqlalchemy import select, update
 from sqlalchemy.orm import sessionmaker
 
 from src.api.repository import BaseRepository
@@ -48,5 +48,16 @@ class UserRepository(BaseRepository):
         async with self._session() as s:
             async with s.begin():
                 return bool((await s.execute(
-                    delete(md.User).where(md.User.id == user_id)
+                    update(md.User).
+                    where(md.User.id == user_id).
+                    values(active=False)
+                )).rowcount)
+
+    async def restore(self, user_id: int):
+        async with self._session() as s:
+            async with s.begin():
+                return bool((await s.execute(
+                    update(md.User).
+                    where(md.User.id == user_id).
+                    values(active=True)
                 )).rowcount)

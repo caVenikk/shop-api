@@ -91,7 +91,7 @@ async def update_user(
     "/{user_id}",
     status_code=status.HTTP_200_OK,
     responses={
-        200: {"description": "User deleted"},
+        200: {"description": "User now inactive"},
         404: {"description": "User not found"}
     }
 )
@@ -102,5 +102,24 @@ async def delete_user(user_id: int, crud: CRUD = Depends(CRUD)):
             detail=f"User with id={user_id} not found."
         )
     return JSONResponse(
-        content={"detail": f"Deleted user with id={user_id}."}
+        content={"detail": f"User with id={user_id} now inactive."}
+    )
+
+
+@router.patch(
+    "/{user_id}/restore",
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {"description": "User restored"},
+        404: {"description": "User not found"}
+    }
+)
+async def delete_user(user_id: int, crud: CRUD = Depends(CRUD)):
+    if not await crud.users.restore(user_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User with id={user_id} not found."
+        )
+    return JSONResponse(
+        content={"detail": f"Restored user with id={user_id}."}
     )

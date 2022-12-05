@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Float, func, Index, BigInteger
+from sqlalchemy import Column, ForeignKey, Integer, String, Float, func, Index, BigInteger, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -13,6 +13,7 @@ class User(Base):
     first_name = Column('first_name', String, nullable=False)
     second_name = Column('second_name', String, nullable=True)
     username = Column('username', String, nullable=True)
+    active = Column('active', Boolean, nullable=False, default=True)
 
     orders = relationship("Order", back_populates="user")
 
@@ -30,6 +31,7 @@ class Product(Base):
     price = Column('price', Float, nullable=False)
     weight = Column('weight', Float, nullable=True)
     description = Column('description', String, nullable=True)
+    active = Column('active', Boolean, nullable=False, default=True)
 
     __table_args__ = (
         Index('product_title_index', 'title'),

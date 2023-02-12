@@ -21,7 +21,11 @@ router = APIRouter(
         }
     }
 )
-async def get_users(limit: int | None = None, offset: int | None = None, crud: CRUD = Depends(CRUD)):
+async def get_users(
+        limit: int | None = None,
+        offset: int | None = None,
+        crud: CRUD = Depends(CRUD)
+):
     users = await crud.users.all(limit, offset)
     return [sc.ResponseUser.from_orm(user) for user in users]
 

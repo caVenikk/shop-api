@@ -15,5 +15,9 @@ def create_database_session():
         encoding='utf-8',
         future=True,
     )
-    session = sessionmaker(bind=db_engine, expire_on_commit=False, class_=AsyncSession)
+    session = sessionmaker(
+        bind=db_engine,
+        expire_on_commit=False,
+        class_=AsyncSession
+    )
     return session

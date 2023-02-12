@@ -1,4 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Float, func, Index, BigInteger, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Float, func, Index, \
+    BigInteger, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -45,6 +46,11 @@ class Order(Base):
 
     id = Column('id', Integer, primary_key=True, autoincrement=True)
     user_id = Column('user_id', Integer, ForeignKey('users.id'), nullable=False)
-    product_id = Column('product_id', Integer, ForeignKey('products.id'), nullable=False)
+    product_id = Column(
+        'product_id',
+        Integer,
+        ForeignKey('products.id'),
+        nullable=False
+    )
 
     user = relationship("User", back_populates="orders")

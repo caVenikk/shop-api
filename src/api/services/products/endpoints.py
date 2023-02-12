@@ -21,7 +21,11 @@ router = APIRouter(
         }
     }
 )
-async def get_products(limit: int | None = None, offset: int | None = None, crud: CRUD = Depends(CRUD)):
+async def get_products(
+        limit: int | None = None,
+        offset: int | None = None,
+        crud: CRUD = Depends(CRUD)
+):
     products = await crud.products.all(limit, offset)
     return [sc.ResponseProduct.from_orm(product) for product in products]
 

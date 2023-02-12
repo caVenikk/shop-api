@@ -22,7 +22,11 @@ router = APIRouter(
         }
     }
 )
-async def get_orders(limit: int | None = None, offset: int | None = None, crud: CRUD = Depends(CRUD)):
+async def get_orders(
+        limit: int | None = None,
+        offset: int | None = None,
+        crud: CRUD = Depends(CRUD)
+):
     orders = await crud.orders.all(limit, offset)
     return [sc.ResponseOrder.from_orm(order) for order in orders]
 

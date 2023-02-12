@@ -1,10 +1,9 @@
-from .base_repository import BaseRepository
-from .user_repository import UserRepository
-from .product_repository import ProductRepository
-from .order_repository import OrderRepository
 from src.db.database import create_database_session
-
 from src.utils import Singleton
+from .base_repository import BaseRepository
+from .order_repository import OrderRepository
+from .product_repository import ProductRepository
+from .user_repository import UserRepository
 
 
 class CRUD(metaclass=Singleton):

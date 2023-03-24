@@ -1,5 +1,14 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Float, func, Index, \
-    BigInteger, Boolean
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    Float,
+    func,
+    Index,
+    BigInteger,
+    Boolean
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -52,5 +61,14 @@ class Order(Base):
         ForeignKey('products.id'),
         nullable=False
     )
+    name = Column('name', String, nullable=False)
+    phone_number = Column('phone_number', String, nullable=False)
+    country_code = Column('country_code', String, nullable=False)
+    state = Column('state', String, nullable=True)
+    city = Column('city', String, nullable=False)
+    street_line1 = Column('street_line1', String, nullable=False)
+    street_line2 = Column('street_line2', String, nullable=True)
+    post_code = Column('post_code', String, nullable=False)
+    total_amount = Column('total_amount', Integer, nullable=False)
 
     user = relationship("User", back_populates="orders")

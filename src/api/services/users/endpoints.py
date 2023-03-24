@@ -35,19 +35,15 @@ async def get_users(
     status_code=status.HTTP_200_OK,
     responses={
         200: {
-            "model": sc.ResponseUser,
+            "model": sc.ResponseUser | None,
             "description": "User"
-        },
-        404: {"description": "User not found"}
+        }
     }
 )
 async def get_user(user_id: int, crud: CRUD = Depends(CRUD)):
     user = await crud.users.get(user_id=user_id)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with id={user_id} not found."
-        )
+        return None
     return sc.ResponseUser.from_orm(user)
 
 

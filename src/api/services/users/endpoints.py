@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.responses import JSONResponse
+from sqlalchemy.exc import IntegrityError
 
 from src.api.repository import CRUD
 from src.api.services.users import schema as sc
@@ -63,7 +64,10 @@ async def get_user(user_id: int, crud: CRUD = Depends(CRUD)):
 )
 async def add_user(user: sc.User, crud: CRUD = Depends(CRUD)):
     new_user = md.User(**user.dict())
-    await crud.users.add(user=new_user)
+    try:
+        await crud.users.add(user=new_user)
+    except IntegrityError:
+        pass
     return sc.ResponseUser.from_orm(new_user)
 
 

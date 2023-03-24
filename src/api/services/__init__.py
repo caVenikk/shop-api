@@ -1,3 +1,4 @@
+from .invoicing import router as invoicing_router
 from .orders import router as orders_router
 from .products import router as products_router
 from .users import router as users_router
@@ -5,5 +6,6 @@ from .users import router as users_router
 ROUTERS = [
     products_router,
     users_router,
-    orders_router
+    orders_router,
+    invoicing_router,
 ]

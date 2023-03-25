@@ -17,8 +17,14 @@ class Database:
 
 
 @dataclass
+class Bot:
+    bot_host: str | None = None
+
+
+@dataclass
 class Config:
     database: Database | None = None
+    bot: Bot | None = None
     _config: ClassVar[Optional["Config"]] = None
 
     @classmethod
@@ -36,7 +42,9 @@ class Config:
                     host=os.environ['DB_HOST'],
                     port=os.environ['DB_PORT'],
                     name=os.environ['DB_NAME']
-                ))
+                ),
+                bot=Bot(bot_host=os.environ['BOT_HOST'])
+            )
         except KeyError:
             raise Exception("Environment variables does not exists.")
         return cls._config

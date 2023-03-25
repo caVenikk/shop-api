@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException, status
 from httpx import ConnectError
 
 from src.api.services import schema as sc
+from src.config import Config
 
 router = APIRouter(
     prefix="/create_invoice_link",
@@ -14,10 +15,12 @@ router = APIRouter(
 
 async def create_invoice_link(product, user_id):
     try:
+        config = Config.load()
+        bot_host = config.bot_host if config.bot_host else "127.0.0.1"
         data = dict(product=json.loads(product.json()), user_id=user_id)
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                "http://127.0.0.1:8888/create_invoice_link",
+                f"http://{bot_host}:8888/create_invoice_link",
                 json=data
             )
         return response

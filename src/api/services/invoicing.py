@@ -16,7 +16,7 @@ router = APIRouter(
 async def create_invoice_link(product, user_id):
     try:
         config = Config.load()
-        bot_host = config.bot_host if config.bot_host else "127.0.0.1"
+        bot_host = config.bot_host if config.bot.host else "127.0.0.1"
         data = dict(product=json.loads(product.json()), user_id=user_id)
         async with httpx.AsyncClient() as client:
             response = await client.post(

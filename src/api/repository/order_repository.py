@@ -1,4 +1,4 @@
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, func
 from sqlalchemy.orm import sessionmaker
 
 from src.api.repository import BaseRepository
@@ -18,6 +18,12 @@ class OrderRepository(BaseRepository):
         async with self._session() as s:
             return (await s.execute(
                 select(md.Order).where(md.Order.id == order_id)
+            )).scalar()
+
+    async def get_last_id(self) -> int | None:
+        async with self._session() as s:
+            return (await s.execute(
+                func.max(md.Order.id)
             )).scalar()
 
     async def all(

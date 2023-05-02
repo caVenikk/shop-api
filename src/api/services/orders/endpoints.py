@@ -52,6 +52,14 @@ async def get_order(order_id: int, crud: CRUD = Depends(CRUD)):
     return sc.ResponseOrder.from_orm(order)
 
 
+@router.get(
+    "/last_id",
+    status_code=status.HTTP_200_OK
+)
+async def get_last_order_id(crud: CRUD = Depends(CRUD)):
+    return await crud.orders.get_last_id() or 0
+
+
 @router.post(
     "/",
     status_code=status.HTTP_201_CREATED,

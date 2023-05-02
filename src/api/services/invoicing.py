@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException, status
 from httpx import ConnectError
 
 from src.api.services import schema as sc
+from src.api.services.products.schema import ResponseProduct
 from src.config import Config
 
 router = APIRouter(
@@ -13,11 +14,11 @@ router = APIRouter(
 )
 
 
-async def create_invoice_link(product, user_id):
+async def create_invoice_link(products: list[ResponseProduct], user_id):
     try:
         config = Config.load()
         bot_host = config.bot.host if config.bot.host else "127.0.0.1"
-        data = dict(product=json.loads(product.json()), user_id=user_id)
+        data = dict(products=[json.loads(product.json()) for product in products], user_id=user_id)
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"http://{bot_host}:8888/create_invoice_link",
@@ -29,8 +30,8 @@ async def create_invoice_link(product, user_id):
 
 
 @router.post("/")
-async def get_invoice_link(data: sc.ProductUserId):
-    response = await create_invoice_link(data.product, data.user_id)
+async def get_invoice_link(data: sc.ProductsUserId):
+    response = await create_invoice_link(data.products, data.user_id)
     if not response:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,

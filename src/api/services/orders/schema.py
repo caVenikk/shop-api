@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 
 
@@ -13,6 +15,7 @@ class Order(BaseModel):
     street_line2: str | None = ""
     post_code: str
     total_amount: int
+    ordered_at: datetime
 
 
 class ResponseOrder(Order):

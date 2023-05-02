@@ -7,7 +7,8 @@ from sqlalchemy import (
     func,
     Index,
     BigInteger,
-    Boolean
+    Boolean,
+    DateTime
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -61,6 +62,7 @@ class Order(Base):
         ForeignKey('products.id'),
         nullable=False
     )
+    ordered_at = Column('ordered_at', DateTime(timezone=True), nullable=False, server_default=func.now())
     name = Column('name', String, nullable=False)
     phone_number = Column('phone_number', String, nullable=False)
     country_code = Column('country_code', String, nullable=False)

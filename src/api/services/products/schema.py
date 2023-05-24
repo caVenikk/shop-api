@@ -10,6 +10,7 @@ class Product(BaseModel):
 
 class ResponseProduct(Product):
     id: int
+    active: bool
 
     class Config:
         orm_mode = True

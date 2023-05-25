@@ -7,12 +7,15 @@ from fastapi.responses import JSONResponse
 
 from src.api.repository import CRUD
 from src.api.services.products import schema as sc
+from src.config import Config
 from src.db import models as md
 
 router = APIRouter(
     prefix="/products",
     tags=["products"],
 )
+
+config = Config.load()
 
 
 @router.get(
@@ -61,7 +64,7 @@ async def add_product(
         if image.format != "PNG":
             image = image.convert("RGB")
         try:
-            image.save(f"..\\shop-webapp\\src\\assets\\images\\{new_product.id}.png", format="PNG")
+            image.save(f"{config.file_system.images_path}\\{new_product.id}.png", format="PNG")
         except OSError:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="File System Error.")
 

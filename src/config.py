@@ -22,30 +22,36 @@ class Bot:
 
 
 @dataclass
+class FileSystem:
+    images_path: str
+
+
+@dataclass
 class Config:
     database: Database | None = None
     bot: Bot | None = None
+    file_system: FileSystem | None = None
     _config: ClassVar[Optional["Config"]] = None
 
     @classmethod
     def load(cls):
         if cls._config:
             return cls._config
-        if os.path.exists('.env'):
+        if os.path.exists(".env"):
             from dotenv import load_dotenv
+
             load_dotenv()
         try:
             cls._config = cls(
                 database=Database(
-                    username=os.environ['DB_USER'],
-                    password=os.environ['DB_PASSWORD'],
-                    host=os.environ['DB_HOST'],
-                    port=os.environ['DB_PORT'],
-                    name=os.environ['DB_NAME']
+                    username=os.environ["DB_USER"],
+                    password=os.environ["DB_PASSWORD"],
+                    host=os.environ["DB_HOST"],
+                    port=os.environ["DB_PORT"],
+                    name=os.environ["DB_NAME"],
                 ),
-                bot=Bot(
-                    host=os.environ['BOT_HOST']
-                ),
+                bot=Bot(host=os.environ["BOT_HOST"]),
+                file_system=FileSystem(images_path=os.environ["IMAGES_PATH"]),
             )
         except KeyError:
             raise Exception("Environment variables does not exists.")

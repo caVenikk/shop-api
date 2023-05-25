@@ -1,9 +1,10 @@
 import io
+import os
 from typing import Annotated
 
 from PIL import Image
 from fastapi import APIRouter, Depends, status, HTTPException, UploadFile, Form, File
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 
 from src.api.repository import CRUD
 from src.api.services.products import schema as sc
@@ -26,6 +27,19 @@ config = Config.load()
 async def get_products(limit: int | None = None, offset: int | None = None, crud: CRUD = Depends(CRUD)):
     products = await crud.products.all(limit, offset)
     return [sc.ResponseProduct.from_orm(product) for product in products]
+
+
+@router.get(
+    "/img/{product_id}",
+    status_code=status.HTTP_200_OK,
+    responses={200: {"content": {"image/png": {}}}},
+)
+async def get_product_image(product_id: int):
+    image_path = f"images\\{product_id}.png"
+    if os.path.exists(image_path):
+        return FileResponse(image_path, media_type="image/png")
+    else:
+        return FileResponse("images\\burrito.png", media_type="image/")
 
 
 @router.get(

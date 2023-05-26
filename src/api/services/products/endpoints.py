@@ -35,11 +35,11 @@ async def get_products(limit: int | None = None, offset: int | None = None, crud
     responses={200: {"content": {"image/png": {}}}},
 )
 async def get_product_image(product_id: int):
-    image_path = f"images\\{product_id}.png"
+    image_path = f"{config.file_system.images_path}/{product_id}.png"
     if os.path.exists(image_path):
         return FileResponse(image_path, media_type="image/png")
     else:
-        return FileResponse("images\\burrito.png", media_type="image/")
+        return FileResponse(f"{config.file_system.images_path}/burrito.png", media_type="image/png")
 
 
 @router.get(
@@ -78,7 +78,7 @@ async def add_product(
         if image.format != "PNG":
             image = image.convert("RGB")
         try:
-            image.save(f"{config.file_system.images_path}\\{new_product.id}.png", format="PNG")
+            image.save(f"{config.file_system.images_path}/{new_product.id}.png", format="PNG")
         except OSError:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="File System Error.")
 

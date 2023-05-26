@@ -2,9 +2,11 @@
 
 ## Table of contents
 
-* [General info](#general-info)
-* [Dependencies](#dependencies)
-* [Setup](#setup)
+- [Shop API](#shop-api)
+  - [Table of contents](#table-of-contents)
+  - [General info](#general-info)
+  - [Dependencies](#dependencies)
+  - [Setup](#setup)
 
 ## General info
 
@@ -17,20 +19,21 @@ database.
 Project is created with Python 3.11.
 Main project dependencies:
 
-* sqlalchemy
-* fastapi
-* alembic
-* asyncpg
-* uvicorn
-* python-dotenv
+- sqlalchemy
+- fastapi
+- alembic
+- asyncpg
+- uvicorn
+- python-dotenv
 
 ## Setup
 
 To run this project at localhost, install all dependencies locally using poetry
 and run it via uvicorn (after alembic migrations):
 
-```
-$ cd ../shop-api
-$ poetry install
-$ alembic upgrade head && uvicorn src.api.app:app --port 8000 --host 127.0.0.1
+```bash
+cd ../shop-api
+poetry install
+alembic upgrade head
+uvicorn src.api.app:app --port 8000 --host 127.0.0.1
 ```

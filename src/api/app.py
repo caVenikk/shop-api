@@ -7,7 +7,7 @@ app = FastAPI()
 for router in ROUTERS:
     app.include_router(router)
 
-origins = ['*']
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -18,6 +18,6 @@ app.add_middleware(
 )
 
 
-@app.get('/')
+@app.get("/")
 async def root():
-    return {'message': 'Hello World!'}
+    return {"message": "Hello World!"}

@@ -16,29 +16,17 @@ class OrderRepository(BaseRepository):
 
     async def get(self, order_id: int) -> md.Order | None:
         async with self._session() as s:
-            return (await s.execute(
-                select(md.Order).where(md.Order.id == order_id)
-            )).scalar()
+            return (await s.execute(select(md.Order).where(md.Order.id == order_id))).scalar()
 
     async def get_last_id(self) -> int | None:
         async with self._session() as s:
-            return (await s.execute(
-                func.max(md.Order.id)
-            )).scalar()
+            return (await s.execute(func.max(md.Order.id))).scalar()
 
-    async def all(
-            self,
-            limit: int | None = None,
-            offset: int | None = None
-    ) -> list[md.Order]:
+    async def all(self, limit: int | None = None, offset: int | None = None) -> list[md.Order]:
         async with self._session() as s:
-            return (await s.execute(
-                select(md.Order).offset(offset).limit(limit)
-            )).scalars()
+            return (await s.execute(select(md.Order).offset(offset).limit(limit))).scalars()
 
     async def delete(self, order_id: int):
         async with self._session() as s:
             async with s.begin():
-                return bool((await s.execute(
-                    delete(md.Order).where(md.Order.id == order_id)
-                )).rowcount)
+                return bool((await s.execute(delete(md.Order).where(md.Order.id == order_id))).rowcount)
